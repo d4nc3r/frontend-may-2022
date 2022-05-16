@@ -8,6 +8,7 @@
     *ngIf="loggedIn"
     type="button"
     class="btn btn-primary"
+    data-auth-logout
     (click)="requestLogout()"
   >
     Log Out {{ userName$ | async }}
@@ -16,6 +17,7 @@
     *ngIf="!loggedIn"
     type="button"
     class="btn btn-primary"
+    data-auth-login
     (click)="requestLogin()"
   >
     Log In
