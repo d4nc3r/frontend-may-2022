@@ -1,7 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { map } from 'rxjs';
+import { map, switchMap } from 'rxjs';
 import { selectCourseAndUserForRegistration } from '..';
 import {
   RegistrationCommands,
@@ -27,5 +28,22 @@ export class RegistrationEffects {
     { dispatch: true }
   );
 
-  constructor(private actions$: Actions, private store: Store) {}
+  sendRegistration$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(RegistrationCommands.createRegistration),
+        // https://blog.angular-university.io/rxjs-higher-order-mapping/
+        switchMap((action) =>
+          this.http.post('/api/registrations', action.payload)
+        )
+      );
+    },
+    { dispatch: false }
+  );
+
+  constructor(
+    private actions$: Actions,
+    private store: Store,
+    private http: HttpClient
+  ) {}
 }

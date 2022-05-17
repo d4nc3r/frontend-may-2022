@@ -4,9 +4,6 @@ describe('course list with api error', () => {
   beforeEach(() => {
     cy.intercept('/api/course-catalog/courses/', {
       statusCode: 404,
-      body: {
-        data: [],
-      },
     });
     cy.intercept('/api/scheduling/schedule', {
       statusCode: 200,

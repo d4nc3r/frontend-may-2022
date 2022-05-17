@@ -6,6 +6,7 @@ import {
 import * as fromCourses from './reducers/courses.reducer';
 import * as fromClasses from './reducers/classes.reducer';
 import * as fromNotifications from './reducers/feature-notification.reducer';
+import * as fromRegistrations from './reducers/registrations.reducer';
 import { CourseEnrollmentViewModel } from '../models';
 import { selectUserName } from '../../auth/state';
 import { RegistrationRequest } from './actions/registration.actions';
@@ -15,12 +16,14 @@ export interface CoursesState {
   courses: fromCourses.CoursesState;
   classes: fromClasses.ClassesState;
   notifications: fromNotifications.FeatureNotificationState;
+  registrations: fromRegistrations.RegistrationState;
 }
 
 export const reducers: ActionReducerMap<CoursesState> = {
   courses: fromCourses.reducer,
   classes: fromClasses.reducer,
   notifications: fromNotifications.reducer,
+  registrations: fromRegistrations.reducer,
 };
 
 const selectFeature = createFeatureSelector<CoursesState>(featureName);
@@ -30,6 +33,10 @@ const selectClassesBranch = createSelector(selectFeature, (f) => f.classes);
 const selectNotificationsBranch = createSelector(
   selectFeature,
   (f) => f.notifications
+);
+const selectRegistrationsBranch = createSelector(
+  selectFeature,
+  (f) => f.registrations
 );
 
 export const selectNotificationNeeded = createSelector(
@@ -80,7 +87,13 @@ export const selectCourseEnrollmentViewModel = (courseId: string) =>
     selectUserName,
     (courses, classes, user) => {
       const course = courses[courseId];
-      const offerings = classes[courseId]?.offerings || [];
+      const offerings =
+        classes[courseId]?.offerings.map((o) => {
+          const msDiff =
+            new Date(o.endDate).getTime() - new Date(o.startDate).getTime();
+          const days = msDiff / (1000 * 3600 * 24);
+          return { ...o, numberOfDays: days + 1 };
+        }) || [];
       if (course) {
         return {
           course: course,
