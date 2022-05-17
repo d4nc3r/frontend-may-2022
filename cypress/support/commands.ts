@@ -1,3 +1,23 @@
+import * as cypress from 'cypress';
+
+declare namespace Cypress {
+  interface Chainable<Subject = any> {
+    loginUser(userName?: string, password?: string): typeof loginUser;
+  }
+}
+
+function loginUser(
+  username: string = 'theDoctor',
+  password: string = '12345678'
+) {
+  // cy.get('[data-auth-login]').click();
+  cy.get('#userName').type('mal');
+  cy.get('#password').type('12345678');
+  cy.get('[data-auth-login-submit]').click();
+}
+
+Cypress.Commands.add('loginUser', loginUser);
+
 // ***********************************************
 // This example namespace declaration will help
 // with Intellisense and code completion in your

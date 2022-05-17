@@ -5,6 +5,7 @@ import {
 } from '@ngrx/store';
 import * as fromCourses from './reducers/courses.reducer';
 import * as fromClasses from './reducers/classes.reducer';
+import * as fromNotifications from './reducers/feature-notification.reducer';
 import { CourseEnrollmentViewModel } from '../models';
 import { selectUserName } from '../../auth/state';
 import { RegistrationRequest } from './actions/registration.actions';
@@ -13,18 +14,33 @@ export const featureName = 'featureCourses';
 export interface CoursesState {
   courses: fromCourses.CoursesState;
   classes: fromClasses.ClassesState;
+  notifications: fromNotifications.FeatureNotificationState;
 }
 
 export const reducers: ActionReducerMap<CoursesState> = {
   courses: fromCourses.reducer,
   classes: fromClasses.reducer,
+  notifications: fromNotifications.reducer,
 };
 
 const selectFeature = createFeatureSelector<CoursesState>(featureName);
 
 const selectCoursesBranch = createSelector(selectFeature, (f) => f.courses);
 const selectClassesBranch = createSelector(selectFeature, (f) => f.classes);
+const selectNotificationsBranch = createSelector(
+  selectFeature,
+  (f) => f.notifications
+);
 
+export const selectNotificationNeeded = createSelector(
+  selectNotificationsBranch,
+  (b) => b.hasErrors
+);
+
+export const selectNotificationMessage = createSelector(
+  selectNotificationsBranch,
+  (b) => b.errorMessage || 'something bad happened.'
+);
 const {
   selectAll: selectAllCoursesArray,
   selectEntities: selectCourseEntities,

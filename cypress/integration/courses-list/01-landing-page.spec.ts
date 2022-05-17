@@ -1,3 +1,5 @@
+import { CourseListSelectors as selectors } from '../../utils/course-list-selectors';
+
 describe('The Courses List', () => {
   beforeEach(() => {
     cy.intercept('/api/course-catalog/courses/', {
@@ -16,38 +18,40 @@ describe('The Courses List', () => {
   describe('the list items - user not logged in', () => {
     describe('the first list item', () => {
       it('exists', () => {
-        cy.get('[data-courses-list-item="0"]').should('exist');
+        cy.get(selectors.getCourseListItem('0')).should('exist');
         //.children()
         //.get('.card-header') // doesn't chain off result of the prev get, it goes after the whole dom, w/o using .children
         //.should('contain.text', 'Taco Salad');
       });
 
       it('should display the title from the API', () => {
-        cy.get('[data-courses-list-item-header="0"]').should(
+        cy.get(selectors.getCourseListItemHeader('0')).should(
           'contain.text',
           'Taco Salad'
         );
       });
 
       it('should display the overview', () => {
-        cy.get('[data-courses-list-item-overview="0"]').should(
+        cy.get(selectors.getCourseListOverview('0')).should(
           'contain.text',
           'Taco Salad is training for Angular'
         );
       });
 
-      it('should display the log in link', () => {
-        cy.get('[data-courses-list-item-login-btn="0"]').should('exist');
+      it('should display the log in button', () => {
+        cy.get(selectors.getCourseListItemLoginButton('0')).should('exist');
       });
 
-      it('should not display the enroll link', () => {
-        cy.get('[data-courses-list-item-enroll-btn="0"]').should('not.exist');
+      it('should not display the enroll button', () => {
+        cy.get(selectors.getCourseListItemEnrollButton('0')).should(
+          'not.exist'
+        );
       });
     });
 
     describe('the second list item', () => {
       it('exists', () => {
-        cy.get('[data-courses-list-item="1"]').should('exist');
+        cy.get(selectors.getCourseListItem('1')).should('exist');
       });
     });
   });
