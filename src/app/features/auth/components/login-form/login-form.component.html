@@ -7,7 +7,7 @@
     <label for="password">Password</label>
     <input type="password" formControlName="password" id="password" />
   </div>
-  <button type="submit" class="btn btn-primary">Log In</button>
+  <button data-auth-login-submit type="submit" class="btn btn-primary">Log In</button>
 </form>
 <div class="" [hidden]="true">
   <pre> {{ param$ | async | json }}</pre>
