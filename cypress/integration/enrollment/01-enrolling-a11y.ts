@@ -25,28 +25,7 @@ describe('enrolling for a course', () => {
     cy.get(selectors.getCourseListItemEnrollButton('0')).click();
   });
 
-  it('displays the dates properly', () => {
-    cy.get('[data-enrollment-date-list] > option').each(
-      (option: HTMLOptionElement, idx) => {
-        cy.wrap(option)
-          .should('contain.text', fixtureData[idx].display)
-          .should('have.value', fixtureData[idx].startDate);
-      }
-    );
-  });
-
-  describe('submitting the enrollment', () => {
-    beforeEach(() => {
-      cy.intercept('/api/registrations', {}).as('registrationsApi');
-    });
-
-    it('watermelon', () => {
-      cy.get('[data-enrollment-date-list]').select(fixtureData[0].startDate);
-      cy.get('button[type="submit"]').click();
-
-      cy.wait('@registrationsApi').then((inter) => {
-        assert.isNotNull(inter.request.body);
-      });
-    });
+  it('check for accessibility', () => {
+    cy.checkForDetectableAccessibilityIssues();
   });
 });
