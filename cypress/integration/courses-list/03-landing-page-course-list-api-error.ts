@@ -1,18 +1,36 @@
-import { CourseListSelectors as selectors } from '../../utils/course-list-selectors';
+describe('courses api returns a 404', () => {
+  describe('the error notification is displayed', () => {
+    beforeEach(() => {
+      cy.intercept('/api/course-catalog/courses/', {
+        statusCode: 404,
+      });
+      cy.intercept('/api/scheduling/schedule', {
+        statusCode: 200,
+        body: {
+          data: [],
+        },
+      });
+      cy.visit('/courses/list');
+    });
+    it('notification is displayed', () => {
+      cy.get('[data-courses-api-error-notification]').should('exist');
+    });
 
-describe('course list with api error', () => {
-  beforeEach(() => {
-    cy.intercept('/api/course-catalog/courses/', {
-      statusCode: 404,
+    it('the courses empty notification is gone', () => {
+      // decide about this.
     });
-    cy.intercept('/api/scheduling/schedule', {
-      statusCode: 200,
-      body: {
-        data: [],
-      },
-    });
-    cy.visit('/courses/list');
   });
+  describe('the error notification should not be shown if there are no errors', () => {
+    beforeEach(() => {
+      cy.intercept('/api/course-catalog/courses/', {
+        statusCode: 200,
+        body: { data: [] },
+      });
+      cy.visit('/courses/list');
+    });
 
-  it('tacos', () => {});
+    it('should not display the notification', () => {
+      cy.get('[data-courses-api-error-notification]').should('not.exist');
+    });
+  });
 });

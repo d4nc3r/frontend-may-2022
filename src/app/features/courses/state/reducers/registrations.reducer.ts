@@ -1,5 +1,6 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, Action, on } from '@ngrx/store';
+import { RegistrationDocuments } from '../actions/registration.actions';
 
 export interface RegistrationEntity {
   registrationId: string;
@@ -18,4 +19,9 @@ export const adapter = createEntityAdapter<RegistrationEntity>({
 
 const initialState = adapter.getInitialState();
 
-export const reducer = createReducer(initialState);
+export const reducer = createReducer(
+  initialState,
+  on(RegistrationDocuments.Registration, (s, a) =>
+    adapter.upsertOne(a.payload, s)
+  )
+);

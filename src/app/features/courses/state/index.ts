@@ -39,6 +39,11 @@ const selectRegistrationsBranch = createSelector(
   (f) => f.registrations
 );
 
+const { selectAll: selectAllRegistrationEntities } =
+  fromRegistrations.adapter.getSelectors(selectRegistrationsBranch);
+
+export const selectAllRegistrations = selectAllRegistrationEntities;
+
 export const selectNotificationNeeded = createSelector(
   selectNotificationsBranch,
   (b) => b.hasErrors

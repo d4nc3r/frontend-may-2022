@@ -1,6 +1,6 @@
-<div class="alert alert-danger" *ngIf="hasNotification$ | async" data-courses-empty-list-notification>The API barfed. Sorry, plz try again. <button class="btn">retry</button></div>
+<div class="alert alert-danger" *ngIf="hasNotification$ | async" data-courses-api-error-notification>The API barfed. Sorry, plz try again. <button class="btn">retry</button></div>
 <ul class="list-unstyled" *ngIf="courses$ | async as courses">
-  <p class="alert alert-info" *ngIf="courses.length === 0" data-courses-empty-list-notification>Sorry, no upcoming courses found!</p>
+  <p class="alert alert-info" *ngIf="courses.length === 0 && (hasNotification$ | async) !== true" data-courses-empty-list-notification>Sorry, no upcoming courses found!</p>
   <li class="card" *ngFor="let course of courses; index as idx" [attr.data-courses-list-item]="idx">
     <div class="card-header">
       <span [attr.data-courses-list-item-header]="idx">{{ course.title }}</span>
