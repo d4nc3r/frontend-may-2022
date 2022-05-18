@@ -60,6 +60,21 @@ export class RegistrationEffects {
     { dispatch: true }
   );
 
+  loadRegistrations$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(RegistrationCommands.loadRegistrations),
+      switchMap(() =>
+        this.http
+          .get<{ data: RegistrationEntity[] }>('/api/registrations')
+          .pipe(
+            map(({ data }) =>
+              RegistrationDocuments.Registrations({ payload: data })
+            )
+          )
+      )
+    );
+  });
+
   constructor(
     private actions$: Actions,
     private store: Store,

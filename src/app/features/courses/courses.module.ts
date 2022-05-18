@@ -17,6 +17,7 @@ import { ReactiveComponentModule } from '@ngrx/component';
 import { RegistrationEffects } from './state/effects/registration.effects';
 import { DateDiffPipe } from 'src/app/pipes/date-diff.pipe';
 import { RegistrationsComponent } from './components/registrations/registrations.component';
+import { FeatureEffects } from './state/effects/feature.effects';
 const routes: Routes = [
   {
     path: '',
@@ -24,7 +25,8 @@ const routes: Routes = [
     children: [
       { path: 'list', component: ListComponent },
       {
-        path: 'registrations', component: RegistrationsComponent
+        path: 'registrations',
+        component: RegistrationsComponent,
       },
       {
         path: 'enroll/:id',
@@ -54,6 +56,7 @@ const routes: Routes = [
       CourseEffects,
       ClassesEffects,
       RegistrationEffects,
+      FeatureEffects,
     ]),
     HttpClientModule,
     ReactiveFormsModule,
